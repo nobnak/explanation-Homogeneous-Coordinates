@@ -43,14 +43,14 @@ public class Filler : MonoBehaviour {
                 quad.position = center;
                 quad.rotation = c.transform.rotation;
                 quad.localScale = size;
-
-                var renderer = quad.GetComponent<Renderer>();
-                if (renderer != null) {
-                    var mat = renderer.sharedMaterial;
-                    mat.mainTexture = captured;
-                }
             }
         }
+    }
+    private void OnRenderImage(RenderTexture source, RenderTexture destination) {
+        if (captured != null) {
+            Graphics.Blit(source, captured);
+        }
+        Graphics.Blit(source, destination);
     }
     private void OnDisable() {
         ReleaseCapturedTexture();
@@ -73,10 +73,14 @@ public class Filler : MonoBehaviour {
     }
 
     private void SetTexture(RenderTexture captured) {
-        var c = GetCamera();
-        if (c != null) {
-            c.targetTexture = captured;
+        if (quad != null) {
+            var renderer = quad.GetComponent<Renderer>();
+            if (renderer != null) {
+                var mat = renderer.sharedMaterial;
+                mat.mainTexture = captured;
+            }
         }
+
         Changed.Invoke(captured);
     }
 
