@@ -85,7 +85,4 @@ public class Filler : MonoBehaviour {
     }
 
     #endregion
-
-    [System.Serializable]
-    public class TextureEvent : UnityEvent<Texture> { }
 }
