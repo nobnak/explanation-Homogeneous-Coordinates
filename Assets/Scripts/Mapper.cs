@@ -32,6 +32,8 @@ public class Mapper : MonoBehaviour {
     protected Vector2[] keystones = KEYSTONES.ToArray();
     [SerializeField]
     protected MeshFilter meshfilter = null;
+    [SerializeField]
+    protected Texture defaultInputTexture = null;
 
     [SerializeField]
     protected TextureEvent Changed = new TextureEvent();
@@ -75,6 +77,9 @@ public class Mapper : MonoBehaviour {
             mesh.vertices = vertices;
             mesh.uv = UV;
             mesh.triangles = INDICES;
+        } else {
+            Debug.LogWarning("Failed to find a plane");
+            keystones = KEYSTONES.ToArray();
         }
 
         if (meshfilter != null) {
@@ -89,27 +94,34 @@ public class Mapper : MonoBehaviour {
                 ReleaseOutputTexture();
 
                 outputTexture = new RenderTexture(c.pixelWidth, c.pixelHeight, 24);
-                Changed.Invoke(outputTexture);
+                SetOutputTexture(outputTexture);
             }
         }
-    }
-    private void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        Graphics.Blit(source, outputTexture);
+
+        if (meshfilter != null) {
+            var r = meshfilter.GetComponent<Renderer>();
+            if (r != null && r.sharedMaterial != null)
+                r.sharedMaterial.mainTexture = GetInputTexture();
+        }
     }
 
     #region methods
     public void SetInputTexture(Texture tex) {
         this.inputTexture = tex;
-
-        if (meshfilter != null) {
-            var r = meshfilter.GetComponent<Renderer>();
-            if (r != null && r.sharedMaterial != null)
-                r.sharedMaterial.mainTexture = tex;
-        }
+    }
+    protected Texture GetInputTexture() {
+        return (inputTexture != null) ? inputTexture : defaultInputTexture;
     }
 
+    protected void SetOutputTexture(RenderTexture tex) {
+        var c = GetCamera();
+        if (c != null) {
+            c.targetTexture = tex;
+        }
+        Changed.Invoke(tex);
+    }
     private void ReleaseOutputTexture() {
-        Changed.Invoke(null);
+        SetOutputTexture(null);
         outputTexture.DestroySelf();
         outputTexture = null;
     }

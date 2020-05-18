@@ -5,17 +5,21 @@ using UnityEngine;
 [ExecuteAlways]
 public class ProjectorController : MonoBehaviour {
 
+    [SerializeField]
+    protected Texture defaultCookie = null;
+
     protected Texture cookie;
     protected Projector projector;
 
     private void Update() {
         var proj = GetProjector();
         if (proj != null) {
+            var tex = GetTexture();
             var mat = proj.material;
-            mat.mainTexture = cookie;
+            mat.mainTexture = tex;
 
-            if (cookie != null) {
-                var aspect = (float)cookie.width / cookie.height;
+            if (tex != null) {
+                var aspect = (float)tex.width / tex.height;
                 proj.aspectRatio = aspect;
             }
         }
@@ -24,6 +28,9 @@ public class ProjectorController : MonoBehaviour {
     #region methods
     public void SetTexture(Texture cookie) {
         this.cookie = cookie;
+    }
+    private Texture GetTexture() {
+        return (cookie != null ? cookie : defaultCookie);
     }
 
     protected Projector GetProjector() {

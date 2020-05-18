@@ -5,7 +5,7 @@
     SubShader {
         Tags { "RenderType"="Opaque" }
 
-		Blend One One
+		Blend SrcAlpha One
 		ZWrite Off
 		Offset -1, -1
 

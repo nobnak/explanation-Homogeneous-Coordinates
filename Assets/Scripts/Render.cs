@@ -4,12 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [ExecuteAlways]
-public class Filler : MonoBehaviour {
-
-    [SerializeField]
-    protected Transform quad;
-    [SerializeField]
-    protected float distance = 1f;
+public class Render : MonoBehaviour {
 
     [SerializeField]
     protected TextureEvent Changed = new TextureEvent();
@@ -20,16 +15,6 @@ public class Filler : MonoBehaviour {
     private void Update() {
         var c = GetCamera();
         if (c != null) {
-            var center = c.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, distance));
-            var size = new Vector3(
-                Vector3.Distance(
-                    c.ViewportToWorldPoint(new Vector3(0f, 0f, distance)),
-                    c.ViewportToWorldPoint(new Vector3(1f, 0f, distance))),
-                Vector3.Distance(
-                    c.ViewportToWorldPoint(new Vector3(0f, 0f, distance)),
-                    c.ViewportToWorldPoint(new Vector3(0f, 1f, distance))),
-                1f);
-
             var resolution = new Vector2Int(c.pixelWidth, c.pixelHeight);
             if (captured == null
                 || captured.width != resolution.x
@@ -38,22 +23,11 @@ public class Filler : MonoBehaviour {
                 captured = CreateTexture(resolution);
                 SetTexture(captured);
             }
-
-            if (quad != null) {
-                quad.position = center;
-                quad.rotation = c.transform.rotation;
-                quad.localScale = size;
-            }
         }
-    }
-    private void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        if (captured != null) {
-            Graphics.Blit(source, captured);
-        }
-        Graphics.Blit(source, destination);
     }
     private void OnDisable() {
         ReleaseCapturedTexture();
+        attachedCam = null;
     }
 
     #region methods
@@ -73,12 +47,9 @@ public class Filler : MonoBehaviour {
     }
 
     private void SetTexture(RenderTexture captured) {
-        if (quad != null) {
-            var renderer = quad.GetComponent<Renderer>();
-            if (renderer != null) {
-                var mat = renderer.sharedMaterial;
-                mat.mainTexture = captured;
-            }
+        var c = GetCamera();
+        if (c != null) {
+            c.targetTexture = captured;
         }
 
         Changed.Invoke(captured);
