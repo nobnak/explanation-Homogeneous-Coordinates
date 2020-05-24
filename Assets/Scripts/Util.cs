@@ -13,4 +13,13 @@ public static class Util {
         else
             Object.DestroyImmediate(obj);
     }
+    public static void DestroyGo(this Component obj) {
+        obj?.gameObject?.DestroySelf();
+    }
+    public static void DestroyGo(this GameObject obj) {
+        obj?.DestroySelf();
+    }
+    public static float SRange(this float size) {
+        return Random.Range(-0.5f * size, 0.5f * size);
+    }
 }
