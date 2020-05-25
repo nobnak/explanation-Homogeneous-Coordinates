@@ -8,6 +8,8 @@ public class Render : MonoBehaviour {
 
     [SerializeField]
     protected TextureEvent Changed = new TextureEvent();
+    [SerializeField]
+    protected int lod = 0;
 
     protected RenderTexture captured = null;
     protected Camera attachedCam = null;
@@ -15,7 +17,10 @@ public class Render : MonoBehaviour {
     private void Update() {
         var c = GetCamera();
         if (c != null) {
-            var resolution = new Vector2Int(c.pixelWidth, c.pixelHeight);
+            var resolution = new Vector2Int(Screen.width, Screen.height);
+            if (lod != 0)
+                resolution = resolution.LOD(lod);
+            Debug.Log($"Resolution {resolution}");
             if (captured == null
                 || captured.width != resolution.x
                 || captured.height != resolution.y) {
