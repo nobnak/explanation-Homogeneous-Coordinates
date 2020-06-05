@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [ExecuteAlways]
-public class FilmScreen : MonoBehaviour {
+public class Film : MonoBehaviour {
 
     [SerializeField]
     protected float distance = 1f;
@@ -13,29 +13,28 @@ public class FilmScreen : MonoBehaviour {
 
     protected Renderer attachedRenderer;
     protected Texture texture;
+    protected MaterialPropertyBlock block;
 
+    private void OnEnable() {
+        block = new MaterialPropertyBlock();
+    }
     private void Update() {
         var r = GetRenderer();
         if (r != null) {
-            var mat = r.sharedMaterial;
-            mat.mainTexture = texture;
+            r.Set(block, texture);
         }
 
         if (targetCamera != null) {
             var c = targetCamera;
             var center = c.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, distance));
-            var size = new Vector3(
-                Vector3.Distance(
+            var size = Vector3.Distance(
                     c.ViewportToWorldPoint(new Vector3(0f, 0f, distance)),
-                    c.ViewportToWorldPoint(new Vector3(1f, 0f, distance))),
-                Vector3.Distance(
-                    c.ViewportToWorldPoint(new Vector3(0f, 0f, distance)),
-                    c.ViewportToWorldPoint(new Vector3(0f, 1f, distance))),
-                1f);
+                    c.ViewportToWorldPoint(new Vector3(0f, 1f, distance))
+                    );
 
             transform.position = center;
             transform.rotation = c.transform.rotation;
-            transform.localScale = size;
+            transform.localScale = new Vector3(size, size, 1);
         }
     }
 

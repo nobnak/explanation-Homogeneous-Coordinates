@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class Util {
+    private const string P_MainTex = "_MainTex";
 
     public static void DestroySelf(this Object obj) {
         if (obj == null)
@@ -21,6 +22,12 @@ public static class Util {
     }
     public static float SRange(this float size) {
         return Random.Range(-0.5f * size, 0.5f * size);
+    }
+    public static void Set(this Renderer r, 
+        MaterialPropertyBlock block, Texture texture, string name = P_MainTex) {
+        r.GetPropertyBlock(block);
+        block.SetTexture(name, texture);
+        r.SetPropertyBlock(block);
     }
 
     public static Vector2Int LOD(this Vector2Int resolusion, int lod = 0) {

@@ -20,7 +20,7 @@ public class Render : MonoBehaviour {
             var resolution = new Vector2Int(Screen.width, Screen.height);
             if (lod != 0)
                 resolution = resolution.LOD(lod);
-            Debug.Log($"Resolution {resolution}");
+            //Debug.Log($"Resolution {resolution}");
             if (captured == null
                 || captured.width != resolution.x
                 || captured.height != resolution.y) {

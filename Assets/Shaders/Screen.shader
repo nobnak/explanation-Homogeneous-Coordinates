@@ -29,10 +29,14 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+			float4 _MainTex_TexelSize;
 
 			float4 _Color;
 
             v2f vert (appdata v) {
+				float2 scale = float2(_MainTex_TexelSize.z * _MainTex_TexelSize.y, 1);
+				v.vertex.xy *= scale;
+
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
