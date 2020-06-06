@@ -59,6 +59,8 @@ public class Mapper : MonoBehaviour {
 
         var c = GetCamera();
         var vertices = new Vector3[4];
+        var inputTex = GetInputTexture();
+
         if ((enabledMapping ? keystones : KEYSTONES)
             .TryBuildParallelorism(vertices)) {
 
@@ -86,14 +88,15 @@ public class Mapper : MonoBehaviour {
             meshfilter.sharedMesh = mesh;
         }
 
-        if (c != null) {
+
+        if (inputTex != null) {
             if (outputTexture == null 
-                || outputTexture.width != c.pixelWidth 
-                || outputTexture.height != c.pixelHeight) {
+                || outputTexture.width != inputTex.width
+                || outputTexture.height != inputTex.height) {
 
                 ReleaseOutputTexture();
 
-                outputTexture = new RenderTexture(c.pixelWidth, c.pixelHeight, 24);
+                outputTexture = new RenderTexture(inputTex.width, inputTex.height, 24);
                 SetOutputTexture(outputTexture);
             }
         }

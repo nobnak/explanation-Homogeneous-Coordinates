@@ -10,8 +10,6 @@ public class Mapper2 : MonoBehaviour {
     public Texture defaultInputTexture;
     public Camera targetCamera;
     public Renderer panel;
-    public Transform viewer;
-    public Transform projector;
 
     protected Texture inputTex;
     protected RenderTexture outputTex;
@@ -25,7 +23,6 @@ public class Mapper2 : MonoBehaviour {
         ReleaseOutputTex();
     }
     private void Update() {
-        var c = GetCamera();
         var input = GetInputTexture();
 
         if (input == null)
@@ -42,11 +39,6 @@ public class Mapper2 : MonoBehaviour {
         if (panel != null) {
             panel.Set(block, input);
         }
-
-        if (panel != null && viewer != null && projector != null) {
-            var q = viewer.rotation * Quaternion.Inverse(projector.rotation);
-            panel.transform.rotation = q;
-        }
     }
     #endregion
 
@@ -60,18 +52,17 @@ public class Mapper2 : MonoBehaviour {
     protected Texture GetInputTexture() {
         return inputTex == null ? defaultInputTexture : inputTex;
     }
-    protected Camera GetCamera() {
-        return (targetCamera == null) ? Camera.main : targetCamera;
-    }
     protected void SetAsOutput(RenderTexture tex) {
-        var c = GetCamera();
-        c.targetTexture = tex;
+        if (targetCamera != null)
+            targetCamera.targetTexture = tex;
         Changed.Invoke(tex);
     }
     protected void ReleaseOutputTex() {
         SetAsOutput(null);
-        outputTex.DestroySelf();
+        if (outputTex != null) {
+            outputTex.DestroySelf();
+            outputTex = null;
+        }
     }
-
     #endregion
 }

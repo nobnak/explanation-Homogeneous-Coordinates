@@ -25,7 +25,7 @@ public class Render : MonoBehaviour {
                 || captured.width != resolution.x
                 || captured.height != resolution.y) {
                 ReleaseCapturedTexture();
-                captured = CreateTexture(resolution);
+                captured = new RenderTexture(resolution.x, resolution.y, 24);
                 SetTexture(captured);
             }
         }
@@ -36,13 +36,12 @@ public class Render : MonoBehaviour {
     }
 
     #region methods
-    private RenderTexture CreateTexture(Vector2Int resolution) {
-        return new RenderTexture(resolution.x, resolution.y, 0);
-    }
     private void ReleaseCapturedTexture() {
         SetTexture(null);
-        captured.DestroySelf();
-        captured = null;
+        if (captured != null) {
+            captured.DestroySelf();
+            captured = null;
+        }
     }
 
     private Camera GetCamera() {

@@ -26,7 +26,8 @@ public static class Util {
     public static void Set(this Renderer r, 
         MaterialPropertyBlock block, Texture texture, string name = P_MainTex) {
         r.GetPropertyBlock(block);
-        block.SetTexture(name, texture);
+        if (texture != null)
+            block.SetTexture(name, texture);
         r.SetPropertyBlock(block);
     }
 

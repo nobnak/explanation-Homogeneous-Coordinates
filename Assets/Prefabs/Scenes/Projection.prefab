@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 5824104234196577592}
   - component: {fileID: 5824104234196577591}
   m_Layer: 9
-  m_Name: Wall (2)
+  m_Name: Wall (Floor)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -331,7 +331,7 @@ GameObject:
   - component: {fileID: 5824104234407073048}
   - component: {fileID: 5824104234407073047}
   m_Layer: 9
-  m_Name: Wall (0)
+  m_Name: Wall (Front)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,13 +423,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5824104234975083015}
-  m_LocalRotation: {x: 0.1962791, y: 0.048509434, z: -0.014111594, w: 0.9792458}
+  m_LocalRotation: {x: 0.19017209, y: 0.06995115, z: -0.03443107, w: 0.97865003}
   m_LocalPosition: {x: -3.95, y: 7.2, z: 10.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5824104234289382063}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 22.692001, y: 5.565, z: -0.53400004}
+  m_LocalEulerAnglesHint: {x: 22.150002, y: 7.6830006, z: -2.5240002}
 --- !u!119 &5824104234975083017
 Projector:
   m_ObjectHideFlags: 0
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 5824104236051504186}
   - component: {fileID: 5824104236051504185}
   m_Layer: 9
-  m_Name: Wall (1)
+  m_Name: Wall (Right)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

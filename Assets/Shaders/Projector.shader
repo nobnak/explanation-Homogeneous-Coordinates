@@ -1,6 +1,7 @@
 ﻿Shader "Unlit/Projector" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
+		_Color ("Color", Color) = (1,1,1,1)
     }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -28,6 +29,7 @@
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+			float4 _Color;
 
 			float4x4 unity_Projector;
 
@@ -43,7 +45,7 @@
 				clip(1 - abs(uv * 2 - 1));
 
                 float4 col = tex2Dproj(_MainTex, i.uv);
-                return col;
+                return col * _Color;
             }
             ENDCG
         }
