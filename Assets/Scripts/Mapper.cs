@@ -42,6 +42,7 @@ public class Mapper : MonoBehaviour {
     protected Camera attachedCamera;
     protected Texture inputTexture;
     protected RenderTexture outputTexture;
+    protected MaterialPropertyBlock block;
 
     private void OnEnable() {
         mesh = new Mesh();
@@ -56,6 +57,12 @@ public class Mapper : MonoBehaviour {
 
     private void Update() {
         System.Array.Resize(ref keystones, 4);
+        for (var i = 0; i < keystones.Length; i++) {
+            var ks = keystones[i];
+            for (var j = 0; j < 2; j++)
+                ks[j] = Mathf.Clamp01(ks[j]);
+            keystones[i] = ks;
+        }
 
         var c = GetCamera();
         var vertices = new Vector3[4];
@@ -103,8 +110,10 @@ public class Mapper : MonoBehaviour {
 
         if (meshfilter != null) {
             var r = meshfilter.GetComponent<Renderer>();
-            if (r != null && r.sharedMaterial != null)
-                r.sharedMaterial.mainTexture = GetInputTexture();
+            if (block == null)
+                block = new MaterialPropertyBlock();
+            if (r != null)
+                r.Set(block, inputTex);
         }
     }
 
