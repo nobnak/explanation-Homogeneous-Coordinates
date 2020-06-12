@@ -11,6 +11,9 @@ public class Angular : MonoBehaviour {
     protected Transform sourceTo;
     [SerializeField]
     protected Transform angleBasedOn;
+    [SerializeField]
+    [Range(0f, 1f)]
+    protected float throttle = 0f;
 
     void Update() {
         if (sourceFrom != null && sourceTo != null) {
@@ -20,7 +23,8 @@ public class Angular : MonoBehaviour {
             if (angleBasedOn != null) {
                 targetFrom = Quaternion.Inverse(angleBasedOn.rotation);
             }
-            transform.rotation = rot * targetFrom;
+            transform.rotation = Quaternion.Lerp(Quaternion.identity, rot, throttle)
+                * targetFrom;
         }
 
     }
